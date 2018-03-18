@@ -1,0 +1,38 @@
+<%= form_tag events_path, :method => :get do %>
+  <%= text_field_tag "keyword" %>
+  <%= submit_tag "Search" %>
+<% end %>
+
+<ul>
+<% @events.each do |event| %>
+  <li>
+    <%= event.name %>
+    <%= link_to "Show", event_path(event) %>
+    <%= link_to 'Edit', edit_event_path(event) %>
+    <%= link_to 'attendees', event_attendees_path(event) %>
+    <%= link_to 'location', event_location_path(event) %>
+    <%= button_to 'Delete', event_path(event), :method => :delete, :data => { :confirm => "Are you sure?" } %>
+    <%= link_to 'Dashboard', dashboard_event_path(event) %>
+  </li>
+<% end %>
+</ul>
+
+<%= link_to 'New Event', new_event_path %>
+
+<%= paginate @events %>
+
+<%= form_tag bulk_update_events_path do %>
+
+<ul>
+  <% @events.each do |e| %>
+    <li>
+ 	      <%= check_box_tag "ids[]", e.id, false %>
+      <%= e.name %>
+    </li>
+  <% end %>
+</ul>
+
+<%= submit_tag "Delete" %>
+<%= submit_tag "Publish" %>
+
+<% end %>
